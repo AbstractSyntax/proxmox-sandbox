@@ -1,9 +1,17 @@
 ---
-- hosts: sandbox
+- name: site-playbook
+  hosts: sandbox
   become: true
   tasks:
     - name: Package installation
       ansible.builtin.apt:
         name:
           - curl
+          - nginx
         state: latest
+
+    - name: Start and enable needed services
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
