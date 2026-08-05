@@ -2,28 +2,5 @@
 - name: site-playbook
   hosts: sandbox
   become: true
-  tasks:
-    - name: Package installation
-      ansible.builtin.apt:
-        name:
-          - curl
-          - nginx
-        state: latest
-        
-    - name: Copy site files
-      ansible.builtin.copy:
-        src: index.html
-        dest: /var/www/html/index.html
-      notify: Reload nginx
-
-    - name: Start and enable nginx services
-      ansible.builtin.service:
-        name: nginx
-        state: started
-        enabled: yes
-
-  handlers:
-    - name: Reload nginx
-      ansible.builtin.service:
-        name: nginx
-        state: reloaded
+  roles:
+    - nginx
