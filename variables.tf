@@ -21,6 +21,12 @@ variable "proxmox_disk_datastore" {
   description = "The datastore where virtual machine disks are stored"
 }
 
+variable "proxmox_iso_datastore" {
+  type        = string
+  description = "The datastore where ISOs and Cloud Images are stored"
+  default     = "local"
+}
+
 variable "ssh_public_key" {
   type        = string
   description = "The public SSH key to inject into the VM"
