@@ -1,15 +1,13 @@
 ---
 - name: Package installation
   ansible.builtin.apt:
-    name:
-      - curl
-      - nginx
+    name: "{{ nginx_packages }}"
     state: latest
     
 - name: Copy site files
   ansible.builtin.copy:
     src: index.html
-    dest: /var/www/html/index.html
+    dest: "{{ nginx_index_dest }}"
   notify: Reload nginx
 
 - name: Start and enable nginx services

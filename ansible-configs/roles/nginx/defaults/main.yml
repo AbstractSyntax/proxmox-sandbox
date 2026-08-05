@@ -1,0 +1,5 @@
+---
+nginx_packages:
+  - curl
+  - nginx
+nginx_index_dest: /var/www/html/index.html
