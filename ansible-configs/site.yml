@@ -1,7 +1,9 @@
 ---
-- name: ping the vm
-  hosts: sandbox
+- hosts: sandbox
   become: true
   tasks:
-    - name: ping-vm
-      ansible.builtin.ping:
+    - name: Package installation
+      ansible.builtin.apt:
+        name:
+          - curl
+        state: latest
