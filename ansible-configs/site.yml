@@ -1,0 +1,7 @@
+---
+- name: ping the vm
+  hosts: sandbox
+  become: true
+  tasks:
+    - name: ping-vm
+      ansible.builtin.ping:
