@@ -21,6 +21,7 @@ resource "proxmox_virtual_environment_file" "user_data_cloud_config" {
     users:
       - name: debian
         groups: sudo
+        sudo: ALL=(root) NOPASSWD:ALL
         shell: /bin/bash
         ssh_authorized_keys:
           - ${trimspace(var.ssh_public_key)}
