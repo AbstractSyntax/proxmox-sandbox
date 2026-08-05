@@ -31,3 +31,9 @@ variable "ssh_public_key" {
   type        = string
   description = "The public SSH key to inject into the VM"
 }
+
+variable "proxmox_ssh_private_key" {
+  type        = string
+  description = "The private SSH key of the Proxmox host root user"
+  sensitive   = true # Prevents Terraform from showing your raw private key in stdout/logs
+}
