@@ -2,9 +2,6 @@ name: Ansible CI/CD
 
 on:
   push:
-    branches:
-      - ci/ansible-pipeline
-      - main
   workflow_dispatch:
 
 jobs:
@@ -51,7 +48,9 @@ jobs:
 
       - name: Ansible lint
         working-directory: ansible-configs
-        run: ansible-lint --vault-password-file .vault_pass
+        env: 
+          ANSIBLE_VAULT_PASSWORD_FILE: .vault_pass
+        run: ansible-lint
 
       - name: Install SSH key
         run: |
