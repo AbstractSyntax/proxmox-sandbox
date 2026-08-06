@@ -45,6 +45,12 @@ jobs:
           pip install ansible ansible-lint
           ansible-galaxy collection install -r requirements.yml
 
+      - name: Write vault password
+        working-directory: ansible-configs
+        run: |
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
+          chmod 600 .vault_pass
+
       - name: Ansible lint
         working-directory: ansible-configs
         run: ansible-lint
@@ -54,12 +60,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
-      - name: Write vault password
-        working-directory: ansible-configs
-        run: |
-          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
-          chmod 600 .vault_pass
 
       - name: Deploy
         working-directory: ansible-configs
