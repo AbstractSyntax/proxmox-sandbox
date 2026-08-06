@@ -1,6 +1,6 @@
 name: Ansible CI/CD
 
-"on":
+on:
   push:
     branches:
       - ci/ansible-pipeline
