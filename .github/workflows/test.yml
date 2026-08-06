@@ -5,4 +5,4 @@ jobs:
   test-job:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Push trigger is working!"
+      - run: echo "Push trigger is working! I think?"
