@@ -34,10 +34,14 @@
   notify: Flag playbook changed
 
 - name: Add Docker repository
-  apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: https://download.docker.com/linux/debian
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: [stable]
+    signed_by: /etc/apt/keyrings/docker.gpg
     state: present
-    filename: docker
   notify: Flag playbook changed
 
 - name: Update apt and install Docker Engine
