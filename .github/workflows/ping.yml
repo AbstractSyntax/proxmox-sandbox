@@ -1,5 +1,4 @@
 name: Ping
-
 on: [push, workflow_dispatch]
 
 jobs:
