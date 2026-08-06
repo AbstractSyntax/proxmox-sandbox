@@ -51,7 +51,7 @@ jobs:
 
       - name: Ansible lint
         working-directory: ansible-configs
-        run: ansible-lint
+        run: ansible-lint --vault-password-file .vault_pass
 
       - name: Install SSH key
         run: |
