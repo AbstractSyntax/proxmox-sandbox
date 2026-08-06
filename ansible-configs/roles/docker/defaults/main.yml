@@ -1,4 +1,4 @@
 ---
 docker_packages:
-  - curl
-  - nginx
+  - dannyben/whoami
+docker_compose_folder: /opt/sandbox-compose

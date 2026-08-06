@@ -58,3 +58,26 @@
     state: started
     enabled: yes
   notify: Flag playbook changed
+
+- name: Create docker-compose dir
+  ansible.builtin.file:
+    path: "{{ docker_compose_folder }}"
+    state: directory
+  notify: Flag playbook changed
+
+- name: Copy Docker compose
+  ansible.builtin.copy:
+    src: compose/docker-compose.yml
+    dest: "{{ docker_compose_folder }}/docker-compose.yml"
+  notify: Flag playbook changed
+
+- name: Deploy the Docker compose application
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_compose_folder }}"
+    state: present
+  register: compose_result
+  notify: Flag playbook changed
+
+- name: Show compose compose_result
+  ansible.builtin.debug:
+        msg: "{{ compose_result }}"
