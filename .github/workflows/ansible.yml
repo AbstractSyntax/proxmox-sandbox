@@ -3,10 +3,6 @@ name: Ansible CI/CD
 on:
   push:
     branches: [main]
-    paths:
-      - "ansible-configs/**"
-      - "terraform-configs/**"
-      - ".github/workflows/ansible.yml"
   workflow_dispatch:
 
 jobs:
