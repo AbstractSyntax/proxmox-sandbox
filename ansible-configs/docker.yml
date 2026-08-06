@@ -4,3 +4,17 @@
   become: true
   roles: 
     - docker
+  handlers:
+    - ansible.builtin.import_tasks: handlers/global_handlers.yml
+  post_tasks:
+    - name: Trigger ntfy when changes occurred
+      ansible.builtin.debug:
+        msg: "Play had changes"
+      changed_when: play_changed | default(false) | bool
+      notify: Send ntfy - changes
+    - name: Trigger ntfy when no changes occurred
+      ansible.builtin.debug:
+        msg: "Play had no changes"
+      changed_when: not (play_changed | default(false) | bool)
+      notify: Send ntfy - no changes
+    

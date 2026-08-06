@@ -1,0 +1,25 @@
+- name: Flag playbook changed
+  ansible.builtin.set_fact:
+    play_changed: true
+
+- name: Send ntfy - changes
+  ansible.builtin.uri:
+    url: "{{ ntfy_url }}/{{ ntfy_topic }}"
+    method: POST
+    user: "{{ ntfy_user }}"
+    password: "{{ ntfy_password }}"
+    force_basic_auth: true
+    body: "Ansible finished: Changes were successfully applied to {{ inventory_hostname }}."
+    status_code: 200
+  delegate_to: localhost
+
+- name: Send ntfy - no changes
+  ansible.builtin.uri:
+    url: "{{ ntfy_url }}/{{ ntfy_topic }}"
+    method: POST
+    user: "{{ ntfy_user }}"
+    password: "{{ ntfy_password }}"
+    force_basic_auth: true
+    body: "Ansible finished: Playbook was run but no changes made to {{ inventory_hostname }}."
+    status_code: 200
+  delegate_to: localhost
