@@ -1,6 +1,6 @@
 name: Ping
 
-on: [push]
+on: [push, workflow_dispatch, workflow_run]
 
 jobs:
   ping:
