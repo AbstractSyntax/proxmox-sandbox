@@ -1,0 +1,6 @@
+---
+- name: docker-playbook
+  hosts: sandbox
+  become: true
+  roles: 
+    - docker
