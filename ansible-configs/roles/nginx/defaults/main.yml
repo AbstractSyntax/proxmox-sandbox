@@ -1,4 +1,5 @@
 ---
+# default packages to install for nginx role
 nginx_packages:
   - curl
   - nginx
