@@ -1,0 +1,13 @@
+name: Ping
+
+on: [push, workflow_dispatch]
+
+jobs:
+  ping:
+    runs-on: [self-hosted, sandbox]
+    steps:
+      - run: echo "push trigger works"
+  ping-2:
+    runs-on: [self-hosted, sandbox]
+    steps:
+      - run: echo "$(date)"

@@ -1,34 +1,33 @@
 ---
 - name: Install required system packages
-  apt:
+  ansible.builtin.apt:
     pkg:
       - ca-certificates
       - curl
       - gnupg
       - software-properties-common
       - rolldice
-    state: latest
+    state: present
     update_cache: true
   notify: Flag playbook changed
 
-
 - name: Create keyrings directory
-  file:
+  ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '0755'
+    mode: "0755"
   notify: Flag playbook changed
 
 - name: Download Docker GPG key
-  get_url:
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/debian/gpg
     dest: /etc/apt/keyrings/docker.asc
-    mode: '0644'
+    mode: "0644"
     force: true
   notify: Flag playbook changed
 
 - name: De-armor Docker GPG key for APT
-  command: gpg --dearmor --yes --output /etc/apt/keyrings/docker.gpg /etc/apt/keyrings/docker.asc
+  ansible.builtin.command: gpg --dearmor --yes --output /etc/apt/keyrings/docker.gpg /etc/apt/keyrings/docker.asc
   args:
     creates: /etc/apt/keyrings/docker.gpg
   notify: Flag playbook changed
@@ -45,14 +44,14 @@
   notify: Flag playbook changed
 
 - name: Update apt and install Docker Engine
-  apt:
+  ansible.builtin.apt:
     pkg:
       - docker-ce
       - docker-ce-cli
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
-    state: latest
+    state: present
     update_cache: true
   notify: Flag playbook changed
 
@@ -60,28 +59,30 @@
   ansible.builtin.service:
     name: docker
     state: started
-    enabled: yes
+    enabled: true
   notify: Flag playbook changed
 
 - name: Create docker-compose dir
   ansible.builtin.file:
     path: "{{ docker_compose_folder }}"
     state: directory
+    mode: "0755"
   notify: Flag playbook changed
 
 - name: Copy Docker compose
   ansible.builtin.copy:
     src: compose/docker-compose.yml
     dest: "{{ docker_compose_folder }}/docker-compose.yml"
+    mode: "0644"
   notify: Flag playbook changed
 
 - name: Deploy the Docker compose application
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_folder }}"
     state: present
-  register: compose_result
+  register: docker_compose_result
   notify: Flag playbook changed
 
-- name: Show compose compose_result
+- name: Show compose result
   ansible.builtin.debug:
-        msg: "{{ compose_result }}"
+    var: docker_compose_result
