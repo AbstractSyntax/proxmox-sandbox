@@ -23,4 +23,3 @@
     body: "Ansible finished: Playbook was run but no changes made to {{ inventory_hostname }}."
     status_code: 200
   delegate_to: localhost
-  
