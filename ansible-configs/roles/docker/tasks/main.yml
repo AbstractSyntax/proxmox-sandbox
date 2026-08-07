@@ -7,23 +7,22 @@
       - gnupg
       - software-properties-common
       - rolldice
-    state: latest
+    state: present
     update_cache: true
   notify: Flag playbook changed
-
 
 - name: Create keyrings directory
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '0755'
+    mode: "0755"
   notify: Flag playbook changed
 
 - name: Download Docker GPG key
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/debian/gpg
     dest: /etc/apt/keyrings/docker.asc
-    mode: '0644'
+    mode: "0644"
     force: true
   notify: Flag playbook changed
 
@@ -52,7 +51,7 @@
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
-    state: latest
+    state: present
     update_cache: true
   notify: Flag playbook changed
 
@@ -67,25 +66,23 @@
   ansible.builtin.file:
     path: "{{ docker_compose_folder }}"
     state: directory
-    mode: on
+    mode: "0755"
   notify: Flag playbook changed
 
 - name: Copy Docker compose
   ansible.builtin.copy:
     src: compose/docker-compose.yml
     dest: "{{ docker_compose_folder }}/docker-compose.yml"
-    mode: on
+    mode: "0644"
   notify: Flag playbook changed
 
 - name: Deploy the Docker compose application
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_folder }}"
     state: present
-  register: compose_result
+  register: docker_compose_result
   notify: Flag playbook changed
 
-- name: Show compose compose_result
+- name: Show compose result
   ansible.builtin.debug:
-        msg: "{{ compose_result }}"
-        mode: "0755"
-        enabled: true          # not yes
+    var: docker_compose_result

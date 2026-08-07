@@ -2,16 +2,17 @@
 - name: Package installation
   ansible.builtin.apt:
     name: "{{ nginx_packages }}"
-    state: latest
-    
+    state: present
+
 - name: Copy site files
   ansible.builtin.copy:
     src: index.html
     dest: "{{ nginx_index_dest }}"
+    mode: "0644"
   notify: Reload nginx
 
 - name: Start and enable nginx services
   ansible.builtin.service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
