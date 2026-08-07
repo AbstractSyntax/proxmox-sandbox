@@ -1,11 +1,12 @@
 ---
-- name: docker-playbook
+- name: Docker-playbook
   hosts: sandbox
   become: true
   roles: 
     - docker
   handlers:
-    - ansible.builtin.import_tasks: handlers/global_handlers.yml
+    - name: Import global handlers
+      ansible.builtin.import_tasks: handlers/global_handlers.yml
   post_tasks:
     - name: Trigger ntfy when changes occurred
       ansible.builtin.debug:

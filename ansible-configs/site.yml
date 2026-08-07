@@ -1,5 +1,5 @@
 ---
-- name: site-playbook
+- name: Site-playbook
   hosts: sandbox
   become: true
   roles:
