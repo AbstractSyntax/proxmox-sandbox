@@ -46,3 +46,6 @@ __pycache__/
 
 # Python virtual environments
 .venv/
+
+# VSCode settings
+.vscode/
