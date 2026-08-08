@@ -1,0 +1,28 @@
+services:
+  browser-emulator-desktop:
+    build: .
+    image: webtop-emulators:local
+    container_name: browser-emulator-desktop
+    restart: unless-stopped
+    shm_size: "2gb"
+    security_opt:
+      - seccomp=unconfined
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: America/New_York
+      SUBFOLDER: "/"
+      TITLE: Cloud Emulator Console
+      WEBTOP_INTERFACE: selkies
+    ports:
+      - "3022:3000"
+      - "50000-50010:50000-50010/udp"
+    volumes:
+      - ./config:/config:rw
+      - ./games:/mnt/games:rw
+      - /var/run/dbus:/var/run/dbus:ro
+    devices:
+      - /dev/dri:/dev/dri
+    cap_add:
+      - SYS_ADMIN
+      - SYS_NICE
