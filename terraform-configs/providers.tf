@@ -7,21 +7,21 @@ terraform {
     }
   }
   cloud {
-  organization = "the-real-server"
-  workspaces {
-    name = "code-server-sandbox"
+    organization = "the-real-server"
+    workspaces {
+      name = "code-server-sandbox"
+    }
   }
-}
 }
 
 provider "proxmox" {
-  endpoint = var.proxmox_endpoint
+  endpoint  = var.proxmox_endpoint
   api_token = var.proxmox_api_token
-  insecure = true
+  insecure  = true
 
   ssh {
-    agent    = false
-    username = "root"
+    agent       = false
+    username    = "root"
     private_key = var.proxmox_ssh_private_key
   }
 }

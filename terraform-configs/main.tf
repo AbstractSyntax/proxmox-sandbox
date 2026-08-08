@@ -5,6 +5,7 @@ resource "proxmox_download_file" "debian_cloud_image" {
   node_name    = var.proxmox_node
   url          = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
   file_name    = "debian-12-generic-amd64.img"
+  overwrite    = false
 }
 
 # 2. Create the Custom Cloud-Init User-Data Snippet
@@ -15,7 +16,7 @@ resource "proxmox_virtual_environment_file" "user_data_cloud_config" {
 
   source_raw {
     file_name = "devops-sandbox-user-data.yaml"
-    
+
     data = <<-EOF
     #cloud-config
     users:
@@ -43,17 +44,18 @@ resource "proxmox_virtual_environment_vm" "debian_vm" {
   name        = "devops-sandbox-vm"
   description = "Managed by Terraform"
   node_name   = var.proxmox_node
+  machine     = "q35"
 
   agent {
     enabled = true
   }
 
   cpu {
-    cores = 2
+    cores = var.vm_cpu_cores
   }
 
   memory {
-    dedicated = 2048
+    dedicated = var.vm_memory_mb
   }
 
   disk {
@@ -63,10 +65,9 @@ resource "proxmox_virtual_environment_vm" "debian_vm" {
     size         = 20
   }
 
-  # Attach the Custom Cloud-Init config we uploaded
   initialization {
     user_data_file_id = proxmox_virtual_environment_file.user_data_cloud_config.id
-    
+
     ip_config {
       ipv4 {
         address = "dhcp"
@@ -76,6 +77,13 @@ resource "proxmox_virtual_environment_vm" "debian_vm" {
 
   network_device {
     bridge = "vmbr0"
+  }
+
+  hostpci {
+    device  = "hostpci0"
+    mapping = proxmox_hardware_mapping_pci.mx450.name
+    pcie    = true
+    xvga    = false
   }
 
   serial_device {}
