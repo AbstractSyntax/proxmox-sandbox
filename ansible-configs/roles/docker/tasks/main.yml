@@ -62,27 +62,37 @@
     enabled: true
   notify: Flag playbook changed
 
-- name: Create docker-compose dir
+- name: Ensure compose project directories exist
   ansible.builtin.file:
-    path: "{{ docker_compose_folder }}"
+    path: "{{ docker_compose_root }}/{{ item.name }}"
     state: directory
     mode: "0755"
+  loop: "{{ docker_compose_projects }}"
+  loop_control:
+    label: "{{ item.name }}"
   notify: Flag playbook changed
 
-- name: Copy Docker compose
+- name: Copy compose project files
   ansible.builtin.copy:
-    src: compose/docker-compose.yml
-    dest: "{{ docker_compose_folder }}/docker-compose.yml"
+    src: "compose/{{ item.name }}/"
+    dest: "{{ docker_compose_root }}/{{ item.name }}/"
     mode: "0644"
+    directory_mode: "0755"
+  loop: "{{ docker_compose_projects }}"
+  loop_control:
+    label: "{{ item.name }}"
   notify: Flag playbook changed
 
-- name: Deploy the Docker compose application
+- name: Deploy compose projects
   community.docker.docker_compose_v2:
-    project_src: "{{ docker_compose_folder }}"
+    project_src: "{{ docker_compose_root }}/{{ item.name }}"
     state: present
+  loop: "{{ docker_compose_projects }}"
+  loop_control:
+    label: "{{ item.name }}"
   register: docker_compose_result
   notify: Flag playbook changed
 
-- name: Show compose result
+- name: Show compose deploy result
   ansible.builtin.debug:
     var: docker_compose_result

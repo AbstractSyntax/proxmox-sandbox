@@ -1,4 +1,7 @@
 ---
 docker_packages:
   - dannyben/whoami
-docker_compose_folder: /opt/sandbox-compose
+docker_compose_root: /opt/compose
+docker_compose_projects:
+  - name: whoami
+  - name: firefox

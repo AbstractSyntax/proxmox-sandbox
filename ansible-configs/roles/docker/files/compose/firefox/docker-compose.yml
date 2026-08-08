@@ -1,0 +1,14 @@
+services:
+  firefox:
+    image: jlesage/firefox
+    container_name: firefox
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - DARK_MODE=1
+    ports:
+      - "5800:5800"
+    volumes:
+      - /docker/appdata/firefox:/config:rw
+    shm_size: "2g"
