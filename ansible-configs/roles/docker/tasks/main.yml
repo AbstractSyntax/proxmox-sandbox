@@ -87,10 +87,10 @@
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_root }}/{{ item.name }}"
     state: present
+    build: always
   loop: "{{ docker_compose_projects }}"
   loop_control:
     label: "{{ item.name }}"
-    build: always
   register: docker_compose_result
   notify: Flag playbook changed
 
