@@ -1,16 +1,37 @@
 ---
+- name: Download Tailscale signing key
+  ansible.builtin.get_url:
+    url: "https://pkgs.tailscale.com/stable/debian/{{ ansible_facts['distribution_release'] }}.noarmor.gpg"
+    dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+    mode: "0644"
+  notify: Flag playbook changed
+
+- name: Add Tailscale repository
+  ansible.builtin.deb822_repository:
+    name: tailscale
+    types: [deb]
+    uris: "https://pkgs.tailscale.com/stable/debian/{{ ansible_facts['distribution_release'] }}"
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: [main]
+    signed_by: /usr/share/keyrings/tailscale-archive-keyring.gpg
+    state: present
+  notify: Flag playbook changed
+
 - name: Install Tailscale
-  ansible.builtin.shell: |
-    curl -fsSL https://tailscale.com/install.sh | sh
-  args:
-    creates: /usr/bin/tailscale
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+    update_cache: true
   notify: Flag playbook changed
 
 - name: Bring Tailscale up
-  ansible.builtin.command: >
-    tailscale up
-    --authkey={{ tailscale_authkey }}
-    --hostname={{ tailscale_hostname }}
-    {{ tailscale_args }}
-  changed_when: true
+  ansible.builtin.command:
+    argv:
+      - tailscale
+      - up
+      - "--authkey={{ tailscale_authkey }}"
+      - "--hostname={{ tailscale_hostname }}"
+      - "--accept-dns=false"
+  register: tailscale_up
+  changed_when: "'Success' in tailscale_up.stdout or tailscale_up.rc == 0"
   notify: Flag playbook changed
