@@ -3,6 +3,7 @@
   hosts: sandbox
   become: true
   roles:
+    - tailscale
     - docker
   handlers:
     - name: Import global handlers

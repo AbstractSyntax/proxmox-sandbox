@@ -1,0 +1,16 @@
+---
+- name: Install Tailscale
+  ansible.builtin.shell: |
+    curl -fsSL https://tailscale.com/install.sh | sh
+  args:
+    creates: /usr/bin/tailscale
+  notify: Flag playbook changed
+
+- name: Bring Tailscale up
+  ansible.builtin.command: >
+    tailscale up
+    --authkey={{ tailscale_authkey }}
+    --hostname={{ tailscale_hostname }}
+    {{ tailscale_args }}
+  changed_when: true
+  notify: Flag playbook changed

@@ -3,3 +3,4 @@ ntfy_user: "{{ vault_ntfy_user }}"
 ntfy_password: "{{ vault_ntfy_password }}"
 ntfy_topic: "{{ vault_ntfy_topic }}"
 ansible_python_interpreter: /usr/bin/python3
+tailscale_authkey: "{{ vault_tailscale_authkey }}"

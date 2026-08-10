@@ -1,0 +1,3 @@
+---
+tailscale_hostname: devops-sandbox-vm
+tailscale_args: "--accept-dns=false"
