@@ -21,7 +21,6 @@ services:
     volumes:
       - ./config:/config:rw
       - ./games:/mnt/games:rw
-      - /var/run/dbus:/var/run/dbus:ro
     devices:
       - /dev/dri:/dev/dri
     cap_add:
