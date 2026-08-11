@@ -16,6 +16,7 @@ services:
       WEBTOP_INTERFACE: selkies
     ports:
       - "3022:3000"
+      - "3023:3001"
       - "50000-50010:50000-50010/udp"
     volumes:
       - ./config:/config:rw
