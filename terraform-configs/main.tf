@@ -62,7 +62,7 @@ resource "proxmox_virtual_environment_vm" "debian_vm" {
     datastore_id = var.proxmox_disk_datastore
     file_id      = proxmox_download_file.debian_cloud_image.id
     interface    = "scsi0"
-    size         = 20
+    size         = 50
   }
 
   initialization {
