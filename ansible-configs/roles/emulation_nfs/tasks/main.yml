@@ -1,0 +1,19 @@
+---
+- name: Ensure nfs-common is installed
+  ansible.builtin.apt:
+    name: nfs-common
+    state: present
+
+- name: Ensure PS2 mountpoint exists
+  ansible.builtin.file:
+    path: /mnt/emulation/ps2
+    state: directory
+    mode: "0755"
+
+- name: Mount Unraid PS2 ISOs over NFS (read-only)
+  ansible.posix.mount:
+    path: /mnt/emulation/ps2
+    src: "100.73.242.61:/mnt/user/isos/PS2 ISOs"
+    fstype: nfs4
+    opts: ro,vers=4,_netdev
+    state: mounted

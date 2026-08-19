@@ -4,6 +4,8 @@
   become: true
   roles:
     - tailscale
+    - emulation_nfs
+    - nvidia
     - docker
   handlers:
     - name: Import global handlers

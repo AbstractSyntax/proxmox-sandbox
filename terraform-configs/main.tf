@@ -52,6 +52,7 @@ resource "proxmox_virtual_environment_vm" "debian_vm" {
 
   cpu {
     cores = var.vm_cpu_cores
+    type = "host"
   }
 
   memory {

@@ -1,0 +1,10 @@
+---
+- name: Reboot for NVIDIA driver
+  ansible.builtin.reboot:
+    msg: Rebooting to load NVIDIA proprietary driver
+    reboot_timeout: 600
+
+- name: Restart Docker for NVIDIA runtime
+  ansible.builtin.service:
+    name: docker
+    state: restarted
